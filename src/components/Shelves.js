@@ -2,13 +2,19 @@ import React from 'react';
 
 class Shelves extends React.Component {
   static propTypes = {
-    shelves: React.PropTypes.array.isRequired
+    shelves: React.PropTypes.array.isRequired,
+    filterReviews: React.PropTypes.func.isRequired
   };
 
   niceName(slug) {
     return slug.split('-')
                .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
                .join(' ');
+  }
+
+  filter = (e, shelf) => {
+    e.preventDefault();
+    this.props.filterReviews({ shelf: shelf.name })
   }
 
   render() {
@@ -18,7 +24,7 @@ class Shelves extends React.Component {
         <div className="list-group shelves">
           {
             this.props.shelves.map(shelf =>
-              <a href='#' className="list-group-item justify-content-between" key={shelf.name}>
+              <a href={`?shelf=${shelf.name}`} onClick={(e) => this.filter(e, shelf)} className="list-group-item justify-content-between" key={shelf.name}>
                 {this.niceName(shelf.name)}
                 <span className="badge badge-default badge-pill">{shelf.books_count}</span>
               </a>

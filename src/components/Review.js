@@ -68,10 +68,48 @@ class Review extends React.Component {
     review: React.PropTypes.object.isRequired
   };
 
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+
+  goToReview = (e) => {
+    event.preventDefault();
+    // Grab text from box
+     const reviewId = this.props.review.id;
+     console.log("Going to ", reviewId);
+
+    // Transition to /store/:storeId
+    this.context.router.transitionTo(`/reviews/${reviewId}`);
+  }
+
   render() {
+    let review = this.props.review,
+        book = review.book;
+
+    // <img src={book.image_url} aria-hidden />
+    // <img src={"http://images.amazon.com/images/P/"+book.isbn+".01.ZTZZZZZZ.jpg"} aria-hidden />
     return (
-      <li className="card card-block">
-        <h4>{this.props.review.book.title}</h4>
+      <li className={"card card-block review mb-3 rating-" + review.rating}>
+        <div className="col-md-3 review--image">
+          <a href={book.link} target="_blank">
+            IMAGE
+          </a>
+          <p className="review--rating">
+            <span className="review--rating-large">{review.rating}</span>
+            /
+            <span className="review--rate-outof">5</span>
+          </p>
+        </div>
+        <div className="col-md-9">
+          <h3>{book.title}</h3>
+          <p className="lead">By {book.authors.author.name}</p>
+          <p>{review.body}</p>
+          <p className="review--meta">
+            <a href={`/reviews/${review.id}`} onClick={this.goToReview} >
+              Started on {review.started_at}. {review.read_at ? `Finished on ${review.read_at}` : 'Currently Reading'}.
+            </a>
+          </p>
+        </div>
       </li>
     )
   }

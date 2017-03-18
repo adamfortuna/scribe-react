@@ -32,10 +32,9 @@ class App extends React.Component {
 
     // The reviews that are currently visible
     this.setState({ reviews: Reviews });
+    this.setActiveReviews(Reviews)
     this.setState({ activeReviews: Reviews });
-    this.setState({ filteredReviews: Reviews.slice(0,this.state.perPage) });
 
-    this.setState({ totalPages: Math.ceil(Reviews.length / this.state.perPage)});
   }
 
   setPage = (e) => {
@@ -46,6 +45,33 @@ class App extends React.Component {
     this.setState({ filteredReviews, page });
   }
 
+  filterReviews = (filters) => {
+    console.log(filters);
+    if(filters.shelf) {
+      let reviews = this.state.reviews.filter((review) => {
+        let shelfNames;
+        if(typeof(review.shelves.shelf.length) === 'number') {
+          shelfNames = review.shelves.shelf.map((shelf) => shelf.name);
+          console.log('shelfNames', shelfNames);
+          console.log('filters.shelf', filters.shelf);
+        } else {
+          shelfNames = [review.shelves.shelf.name];
+
+        }
+        return shelfNames.indexOf(filters.shelf) !== -1;
+      });
+      console.log('reviews', reviews);
+      this.setActiveReviews(reviews);
+
+    }
+  }
+
+  setActiveReviews = (activeReviews) => {
+    this.setState({ activeReviews });
+    this.setState({ activeReviews });
+    this.setState({ filteredReviews: activeReviews.slice(0,this.state.perPage) });
+    this.setState({ totalPages: Math.ceil(activeReviews.length / this.state.perPage)});
+  }
 
   render() {
     return (
@@ -62,7 +88,7 @@ class App extends React.Component {
 
             <Pagination count={this.state.activeReviews.length} page={this.state.page} perPage={this.state.perPage} setPage={this.setPage} />
 
-            <ul className="list-unstyled">
+            <ul className="list-unstyled reviews">
               { this.state.filteredReviews.map(review => <Review key={review.id} review={review} />) }
             </ul>
 
@@ -71,7 +97,7 @@ class App extends React.Component {
 
           <div className="col-md-3">
             <Filter activeReviews={this.state.activeReviews} reviews={this.state.reviews} page={this.state.page} totalPages={this.state.totalPages} />
-            <Shelves shelves={this.state.shelves} />
+            <Shelves shelves={this.state.shelves} filterReviews={this.filterReviews} />
           </div>
         </div>
       </div>
