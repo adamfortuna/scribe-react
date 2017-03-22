@@ -14,13 +14,15 @@
     "stylus": "0.54.5"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "bootstrap": "^4.0.0-alpha.6",
     "history": "4.2.0",
     "re-base": "2.2.0",
     "react": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",
     "react-dom": "15.3.2",
-    "react-router": "4.0.0-alpha.4"
+    "react-router": "4.0.0",
+    "react-router-dom": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

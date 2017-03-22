@@ -1,23 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Match, Miss } from 'react-router';
-
+import Routes from './routes';
 import './css/style.css'
-import App from './components/App';
-import Review from './components/Review';
-import NotFound from './components/NotFound';
-
 
 const Root = () => {
-  return (
-    <BrowserRouter>
-      <div>
-        <Match exactly pattern="/" component={App} />
-        <Match pattern="/reviews/:reviewId" component={Review} />
-        <Miss component={NotFound} />
-      </div>
-    </BrowserRouter>
-  )
+  return <Routes />;
 }
 
-render(<Root/>, document.querySelector('#main'));
+render(<Root />, document.getElementById('main'));
